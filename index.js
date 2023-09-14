@@ -7,58 +7,37 @@ window.addEventListener("load", () => {
   const hHalf = (h/2) - 20;
 
   // math is my passion -- https://stackoverflow.com/questions/30531474/d3js-find-closest-point-on-circle
-
-
   let radius = 125;
-  function findAngle(x, y) {
+  function findXY(x, y) {
     var dx = x - wHalf,
     dy = y - hHalf,
     dist = Math.sqrt(dx*dx + dy*dy),
     newX = wHalf + dx * radius / dist,
     newY = hHalf + dy * radius / dist;
-    console.log({newX,newY})
     return {x:newX, y:newY};
   }
-  // for (let angle = 0; angle < 360; angle+=15) {
-  //   var x = (Math.cos(angle) * radius) + wHalf;
-  //   var y = (Math.sin(angle) * radius) + hHalf;
-  //   return {x, y};
-  //   const butt = document.createElement("button");
-  //   butt.innerHTML = "*"
-  //   butt.style.top = `${y}px`;
-  //   butt.style.left = `${x}px`;
-  //   document.body.appendChild(butt);
-  // }
-
   // add blur?
-  function findDirection(x, y) {
-    // top left
-    if (x < wHalf && y > hHalf) {
-
-    }
-    // top right
-    else if (x >= wHalf && y > hHalf) {}
-    // bottom left
-    else if (x > wHalf && y < hHalf) {}
-    // bottom right
-    else if (x < wHalf && y < hHalf) {}
-  }
 
   // code from https://codepen.io/deepakkadarivel/pen/LrGEdL
   function addDrag(box) {
+    const other = (box == moon) ? sun : moon;
     function onMove(e, isMobile = false) {
         e.preventDefault();
         if (isMobile) {
           var touchLocation = e.targetTouches[0];
-          const found = findAngle(touchLocation.pageX, touchLocation.pageY);
-          box.style.left = found.x + 'px'; // touchLocation.pageX - 30 
-          box.style.top = found.y + 'px'; // touchLocation.pageY - 30 
-          // findDirection(touchLocation.pageX, touchLocation.pageY);
+          const found = findXY(touchLocation.pageX, touchLocation.pageY);
+          box.style.left = found.x - 30 + 'px'; // touchLocation.pageX
+          box.style.top = found.y - 30 + 'px'; // touchLocation.pageY
+          const found2 = findXY(Math.abs(touchLocation.pageX - (radius*2)), Math.abs(touchLocation.pageY - (radius*2)));
+          other.style.left = found2.x - 30 + 'px'; // touchLocation.pageX
+          other.style.top = found2.y - 30 + 'px'; // touchLocation.pageY
         } else {
-          const found = findAngle(e.pageX, e.pageY);
-          box.style.left = found.x + 'px';// e.pageX - 20 
-          box.style.top = found.y + 'px';// e.pageY - 20 
-          // findDirection(e.pageX, e.pageY);
+          const found = findXY(e.pageX, e.pageY);
+          box.style.left = found.x - 20 + 'px';// e.pageX
+          box.style.top = found.y - 20 + 'px';// e.pageY
+          const found2 = findXY(Math.abs(e.pageX - (radius*2)), Math.abs(e.pageY - (radius*2)));
+          other.style.left = found2.x - 20 + 'px';// e.pageX
+          other.style.top = found2.y - 20 + 'px';// e.pageY
         }
     }
     box.addEventListener('mousedown', function() {
@@ -67,9 +46,11 @@ window.addEventListener("load", () => {
     document.body.addEventListener('mouseup', function(e) {
       document.body.removeEventListener('mousemove', onMove);
     });
-    box.addEventListener('touchmove', () => onMove(e, true));
+    box.addEventListener('touchmove', (e) => onMove(e, true));
   }
 
-  addDrag(document.getElementById('moon'));
-  addDrag(document.getElementById('sun'));
+  const moon = document.getElementById('moon');
+  const sun = document.getElementById('sun');
+  addDrag(moon);
+  addDrag(sun);
 });
