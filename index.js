@@ -1,10 +1,29 @@
 window.addEventListener("load", () => {
-  // code from https://codepen.io/deepakkadarivel/pen/LrGEdL
-  addDrag(document.getElementById('moon'));
-  addDrag(document.getElementById('sun'));
+  const wOffset = (window.innerWidth/10);
+  const w = window.innerWidth;
+  const hOffset = (window.innerHeight/15);
+  const h = window.innerHeight;
+  const wHalf = (w/2);
+  const hHalf = (h/2) - 20;
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  let radius = 125;
+  for (let angle = 0; angle < 360; angle+=15) {
+    var x = (Math.cos(angle) * radius) + wHalf;
+    var y = (Math.sin(angle) * radius) + hHalf;
+    const butt = document.createElement("button");
+    butt.innerHTML = "*"
+    butt.style.top = `${y}px`;
+    butt.style.left = `${x}px`;
+    document.body.appendChild(butt);
+  }
 
   // add blur?
-
+  // code from https://codepen.io/deepakkadarivel/pen/LrGEdL
   function addDrag(box) {
     function onMove(e, isMobile = false) {
         e.preventDefault();
@@ -25,4 +44,7 @@ window.addEventListener("load", () => {
     });
     box.addEventListener('touchmove', () => onMove(e, true));
   }
+
+  addDrag(document.getElementById('moon'));
+  addDrag(document.getElementById('sun'));
 });
