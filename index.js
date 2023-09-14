@@ -3,6 +3,8 @@ window.addEventListener("load", () => {
   addDragDrop(document.getElementById('moon'));
   addDragDrop(document.getElementById('sun'));
 
+  // add blur?
+
   function addDragDrop(box) {
     function onMove(e) {
         e.preventDefault();
@@ -10,10 +12,10 @@ window.addEventListener("load", () => {
         box.style.top = e.pageY - 20 + 'px';
     }
     box.addEventListener('mousedown', function() {
-      box.addEventListener('mousemove', onMove);
+      document.body.addEventListener('mousemove', onMove);
     })
     document.body.addEventListener('mouseup', function(e) {
-      box.removeEventListener('mousemove', onMove);
+      document.body.removeEventListener('mousemove', onMove);
     });
     box.addEventListener('touchmove', function(e) {
       e.preventDefault();
