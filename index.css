@@ -30,17 +30,3 @@ body {
   position: absolute;
   font-size: 36px;
 }
-
-#moon {
-  top: 45vh;
-  left: 30vw;
-}
-
-#sun {
-  top: 45vh;
-  left: 70vw;
-}
-
-button {
-  position: absolute;
-}
